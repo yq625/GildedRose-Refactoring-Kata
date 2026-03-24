@@ -30,16 +30,22 @@ class SulfurasUpdater:
 
 
 class BackstagePassUpdater:
+    def _increase_for(self, sell_in):
+        if sell_in < 0:
+            return None
+        if sell_in < 5:
+            return 3
+        if sell_in < 10:
+            return 2
+        return 1
+
     def update(self, item):
         item.sell_in -= 1
-        if item.sell_in < 0:
+        inc = self._increase_for(item.sell_in)
+        if inc is None:
             item.quality = 0
-        elif item.sell_in < 5:
-            item.quality = min(50, item.quality + 3)
-        elif item.sell_in < 10:
-            item.quality = min(50, item.quality + 2)
         else:
-            item.quality = min(50, item.quality + 1)
+            item.quality = min(50, item.quality + inc)
 
 
 class ConjuredUpdater:
